@@ -1,8 +1,10 @@
 'use strict';
+const {isBefore} = require('date-fns');
+
 const {
   Model
 } = require('sequelize');
-const {isBefore} = require('date-fns');
+
 
 
 module.exports = (sequelize, DataTypes) => {
@@ -14,18 +16,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Task, {
+        foreignKey: 'userId'
+      })
     }
   }
   User.init({
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
-      field: 'first_name'
+      field: "first_name"
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
-      field: 'last_name'
+      field: "last_name"
     },
     email: {
       type: DataTypes.STRING,
@@ -44,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       validate: {
         isValidDate(value) {
-          if(isBefore (new Date(), naw Date(value))) {
+          if(isBefore (new Date(), new Date(value))) {
             throw new Error('Check your birthdate')
           }
         }
@@ -57,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    tableName: 'user',
+    tableName: 'users',
     underscored: true
   });
   return User;
