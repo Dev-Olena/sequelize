@@ -11,6 +11,52 @@ module.exports.createTask = async (req, res, next) => {
         next(error)
     }
 }
+
+module.exports.getTask = async (req, res, next) => {
+    // /users/:userId/tasks/:taskId
+    try {
+        const {params: {taskId}} = req;
+        // const task = await Task.findByPk(Number(taskId));
+        if(taskId) {
+            const task = await Task.findByPk(Number(taskId));
+            res.status(200).send({data: task})
+        } else {
+            throw new NotFoundError('Task is not found')
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports.updateTask = async (req, res, next) => {
+    try {
+        const {body, params: {taskId}} = req;
+        const [rowCount, updatedTask] = await Task.update(body, {
+            where: {
+                id: Number(taskId)
+            },
+            returning: true
+        });
+        res.status(200).send({data: updatedTask})
+    } catch (error) {
+        next(error)
+    }
+
+}
+
+module.exports.deleteTask = async (req, res, next) => {
+    try {
+        const {params: {taskId}} = req;
+        const foundTask = await Task.findByPk(taskId);
+        if(foundTask) {
+            const deleted = await foundTask.destroy();
+            res.status(200).send({data: foundTask})
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports.getAllUserTasks = async (req, res, next) => {
     try {
         const {params: {userId}} = req;
