@@ -76,7 +76,10 @@ module.exports.getGroupWithMembers = async (req, res, next) => {
                 id: Number(groupId)
             },
             include: [{
-                model: User
+                model: User,
+                attributes: {
+                    exclude: ['password']
+                }
             }]
         });
         res.status(200).send({data: groupWithMembers})

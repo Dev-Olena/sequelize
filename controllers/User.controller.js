@@ -23,7 +23,12 @@ module.exports.getAll = async (req, res, next) => {
 module.exports.getOne = async (req, res, next) => {
     try {
         const {params: {userId}} = req;
-        const user = await User.findByPk(userId);//завжди string
+        const user = await User.findByPk(userId, {
+            // attributes: ['firstName', 'lastName']
+            attributes: {
+                exclude: ['password']
+            }
+        });//завжди string
         res.status(200).send(user);
 
     } catch (error) {
