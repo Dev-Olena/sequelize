@@ -12,8 +12,16 @@ module.exports.createOne = async (req, res, next) => {
 
 module.exports.getAll = async (req, res, next) => {
     try{
-        const users = await User.findAll();
-        res.status(200).send(users)
+        const {query} = req;
+        const users = await User.findAll({
+            limit: query.limit,
+            offset: query.offset
+            // limit: 2,
+            // offset: 2
+        });
+        res.status(200).send({
+            data: users
+        })
     } catch(error) {
         res.status(400).send(error)
     }
