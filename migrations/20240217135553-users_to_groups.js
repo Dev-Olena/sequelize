@@ -23,7 +23,9 @@ module.exports = {
         references: {
           model: 'users',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       groupId: {
         type: Sequelize.INTEGER,
@@ -32,7 +34,9 @@ module.exports = {
         references: {
           model: 'groups',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

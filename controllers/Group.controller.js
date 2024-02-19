@@ -45,7 +45,13 @@ module.exports.updateGroup = async (req, res, next) => {
 
 module.exports.deleteGroup = async (req, res, next) => {
     try {
-        
+        const {params: {groupId}} = req;
+        const deleted = await Group.destroy({
+            where: {
+                id: Number(groupId)
+            }
+        });
+        res.status(204).send({})
     } catch (error) {
         next(error)
     }
@@ -106,4 +112,21 @@ module.exports.countMembers = async (req, res, next) => {
         next(error)
     }
     
+};
+
+module.exports.createImage = async (req, res, next) => {
+    try {
+        const {file: {filename}, params: {groupId}} = req;
+        const [rowCount, updateGroup] = await Group.update({
+            imagePath: filename
+        }, {
+            where:  {
+                id: Number(groupId)
+            },
+            returning: true
+        });
+        res.status(200).send(updateGroup)
+    } catch (error) {
+        next(error)
+    }
 }

@@ -8,6 +8,7 @@ const bodyParser = express.json();
 
 app.use(bodyParser);
 app.use('/api', rootRouter);
+app.use(express.static('public/images'));
 
 
 app.use(errorHandler);
